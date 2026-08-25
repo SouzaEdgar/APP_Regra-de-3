@@ -14,15 +14,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import com.sheepblue.regrade3.utils.isValidNumber
 
 @Composable
-fun NumberInput(valor: String, text: String, onTextChange: (String) -> Unit) {
+fun NumberInput(
+    modifier: Modifier,
+    quadrant: String,
+    text: String,
+    onTextChange: (String) -> Unit,
+    readOnly: Boolean
+) {
     OutlinedTextField(
         value = text,
         onValueChange = onTextChange,
+        readOnly = readOnly,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-        label = { Text("Valor $valor") },
-        placeholder = { Text("Digite o valor de $valor") },
+        label = { Text("Valor $quadrant") },
+        placeholder = { Text("Digite o valor de $quadrant") },
+        modifier = modifier
     )
 }
 
@@ -32,15 +41,15 @@ fun NumberInputPreview() {
     Box(modifier = Modifier.fillMaxSize()) {
         var num by rememberSaveable { mutableStateOf("") }
         NumberInput(
-            valor = "A",
+            modifier = Modifier,
+            quadrant = "A",
             text = num,
             onTextChange = { text ->
-                if (
-                    text.count { it == '.' } <= 1 &&
-                    text.filter { it != '.' }.all(Char::isDigit)
-                ) {
+                if (isValidNumber(text)) {
                     num = text
                 }
-            })
+            },
+            readOnly = true
+        )
     }
 }
