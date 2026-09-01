@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
@@ -40,14 +41,23 @@ fun ResultCard(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("X = ")
+            TextStyled(text = "X = ")
             Fraction(Modifier.weight(1f), formulaNumerator, formulaDenominator)
-            Text(" => ")
+            TextStyled(" => ")
             Fraction(Modifier.weight(1f), numerator, denominator)
-            Text(" = $result")
+            TextStyled(" = $result")
         }
 
     }
+}
+
+@Composable
+fun TextStyled(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Bold
+    )
 }
 
 @Composable
