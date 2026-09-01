@@ -18,9 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.sheepblue.regrade3.domain.model.CalculationType
 
 @Composable
-fun CalculationTypeSelector() {
+fun CalculationTypeSelector(
+    selectedType: CalculationType,
+    options: List<CalculationType>,
+    onClick: (CalculationType) -> Unit,
+) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -31,19 +36,16 @@ fun CalculationTypeSelector() {
             style = MaterialTheme.typography.titleMedium
         )
 
-        var selectedIndex by remember { mutableStateOf(true) }
-        val options = listOf("Direto", "Inverso")
-
         SingleChoiceSegmentedButtonRow {
-            options.forEachIndexed { index, label ->
+            options.forEachIndexed { index, type ->
                 SegmentedButton(
                     shape = SegmentedButtonDefaults.itemShape(
                         index = index,
                         count = options.size
                     ),
-                    onClick = { selectedIndex = index > 0},
-                    selected = index == if (selectedIndex) 1 else 0,
-                    label = { Text(label) }
+                    onClick = {  onClick(type) },
+                    selected = selectedType == type,
+                    label = { Text(type.label) }
                 )
             }
         }
@@ -53,5 +55,11 @@ fun CalculationTypeSelector() {
 @Composable
 @Preview(showBackground = true)
 fun CalculationTypeSelectorPreview() {
-    CalculationTypeSelector()
+    var selectedType by remember { mutableStateOf(CalculationType.INVERSE) }
+
+    CalculationTypeSelector(
+        selectedType = selectedType,
+        options = CalculationType.entries,
+        onClick = { selectedType = it }
+    )
 }
