@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -50,6 +51,9 @@ fun CalculatorScreen() {
 
     var selectedType by remember { mutableStateOf(CalculationType.INVERSE) }
 
+    var showCard by remember { mutableStateOf(false) }
+    var emptyNum by remember { mutableStateOf("") }
+    var hasResult by remember { mutableStateOf(false) }
     var result by remember { mutableDoubleStateOf(0.0) }
 
     Column(
@@ -74,25 +78,39 @@ fun CalculatorScreen() {
         }
         // TODO: ao clicar no botão VALIDAR os inputs, e então se possivel exibir o Card de Resultado
         CalculateButton {
-            result = RuleOfThreeCalculator().calculate(
-                RuleOfThree(
-                    valueA = numA.toDouble(),
-                    valueB = numB.toDouble(),
-                    valueC = numC.toDouble(),
-                    type = selectedType
+            hasResult = false
+            if (numA.isEmpty()) emptyNum = "Valor A"
+            else if (numB.isEmpty()) emptyNum = "Valor B"
+            else if (numC.isEmpty()) emptyNum = "Valor C"
+
+            if (emptyNum.isEmpty()) {
+                result = RuleOfThreeCalculator().calculate(
+                    RuleOfThree(
+                        valueA = numA.toDouble(),
+                        valueB = numB.toDouble(),
+                        valueC = numC.toDouble(),
+                        type = selectedType
+                    )
                 )
-            )
+                hasResult = true
+            }
+
+            showCard = true
         }
 
-        //if (hasResult) {
-        ResultCard(
-            type = selectedType,
-            result = result,
-            numA = numA,
-            numB = numB,
-            numC = numC
-        )
-        // }
+        if (showCard) {
+            if (hasResult) {
+                ResultCard(
+                    type = selectedType,
+                    result = result,
+                    numA = numA,
+                    numB = numB,
+                    numC = numC
+                )
+            } else {
+                Text("Preencher $emptyNum")
+            }
+        }
     }
 }
 
