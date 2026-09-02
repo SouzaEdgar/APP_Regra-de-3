@@ -20,39 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sheepblue.regrade3.domain.enums.CalculationType
+import com.sheepblue.regrade3.domain.model.RuleOfThreeResult
 import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
-
-// TODO: posteriormente transformar essas informações em um data Class
-//   algo como RuleOfThreeResult, que tera result, formula, numerator e denomintaor
 
 @Composable
 fun ResultCard(
-    type: CalculationType,
-    result: Double,
-    numA: String,
-    numB: String,
-    numC: String
+    result: RuleOfThreeResult
 ) {
-    val formulaNumerator: String
-    val formulaDenominator: String
-    val numerator: String
-    val denominator: String
-
-    when(type) {
-        CalculationType.INVERSE -> {
-            formulaNumerator = "A * B"
-            formulaDenominator = "C"
-            numerator = "$numA * $numB"
-            denominator = numC
-        }
-        CalculationType.DIRECT -> {
-            formulaNumerator = "B * C"
-            formulaDenominator = "A"
-            numerator = "$numB * $numC"
-            denominator = numA
-        }
-    }
-
     Card(
         modifier = Modifier.padding(16.dp),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -63,9 +37,9 @@ fun ResultCard(
             horizontalArrangement = Arrangement.Center
         ) {
             TextStyled(text = "X = ")
-            Fraction(Modifier.weight(1f), formulaNumerator, formulaDenominator)
+            Fraction(Modifier.weight(1f), result.formulaNumerator, result.formulaDenominator)
             TextStyled(" => ")
-            Fraction(Modifier.weight(1f), numerator, denominator)
+            Fraction(Modifier.weight(1f), result.expressionNumerator, result.expressionDenominator)
             TextStyled(" = $result")
         }
 
@@ -97,7 +71,6 @@ private fun Fraction(
     }
 }
 
-
 @Composable
 @Preview(name = "light", showBackground = true)
 @Preview(name = "dark", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -106,11 +79,13 @@ fun ResultCardPreview() {
         Surface(color = MaterialTheme.colorScheme.background) {
             Box() {
                 ResultCard(
-                    result = 26.0,
-                    type = CalculationType.DIRECT,
-                    numA = "5000",
-                    numB = "65",
-                    numC = "2000"
+                    result = RuleOfThreeResult(
+                        result = 26.0,
+                        formulaNumerator = "B * C",
+                        formulaDenominator = "A",
+                        expressionNumerator = "65 * 2000",
+                        expressionDenominator = "5000"
+                    )
                 )
             }
         }
