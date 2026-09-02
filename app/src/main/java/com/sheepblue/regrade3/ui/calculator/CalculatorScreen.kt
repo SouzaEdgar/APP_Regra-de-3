@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.sheepblue.regrade3.domain.RuleOfThreeCalculator
 import com.sheepblue.regrade3.domain.enums.CalculationType
 import com.sheepblue.regrade3.domain.enums.InputError
+import com.sheepblue.regrade3.domain.model.CalculationResult
 import com.sheepblue.regrade3.domain.model.RuleOfThree
 import com.sheepblue.regrade3.domain.model.RuleOfThreeResult
 import com.sheepblue.regrade3.ui.calculator.components.CalculateButton
@@ -56,7 +57,8 @@ fun CalculatorScreen() {
     var selectedType by remember { mutableStateOf(CalculationType.DIRECT) }
 
     var showCard by remember { mutableStateOf(false) }
-    var result by remember { mutableDoubleStateOf(0.0) }
+
+    var calculationResult by remember { mutableStateOf<CalculationResult?>(null) }
 
     val wrongInput = remember { mutableStateListOf<InputError>() }
 
@@ -93,16 +95,18 @@ fun CalculatorScreen() {
                 onClick = {
                     showCard = false
                     selectedType = it
+                    wrongInput.clear()
+                    calculationResult = null
                 }
             )
         }
-        // TODO: refatorar validacao dos inputs antes do calculo
+        // TODO: mover controle de estado e calculo para ViewModel
         CalculateButton {
             wrongInput.clear()
             val validate = validateInputs(numA, numB, numC)
 
             if (validate.isEmpty()) {
-                result = RuleOfThreeCalculator().calculate(
+                calculationResult = RuleOfThreeCalculator().calculate(
                     RuleOfThree(
                         valueA = numA.toDouble(),
                         valueB = numB.toDouble(),
@@ -110,85 +114,35 @@ fun CalculatorScreen() {
                         type = selectedType
                     )
                 )
-                showCard = true
-            } else {
-                validate.forEach { value ->
-                    wrongInput.add(value)
+
+                when(val result = calculationResult) {
+                    is CalculationResult.Success -> {
+                        showCard = true
+                    }
+
+                    is CalculationResult.Error -> {
+                        wrongInput.addAll(result.errors)
+                    }
+
+                    else -> {}
                 }
+            } else {
+                wrongInput.addAll(validate)
             }
         }
 
         AnimatedVisibility(visible = showCard) {
-            ResultCard(
-                type = selectedType,
-                result = result,
-                numA = numA,
-                numB = numB,
-                numC = numC
-            )
-        }
-
-    }
-}
-
-// Cogitei deixar a verificação "validateInputs" dentro da função, porem, como eu iria
-//   retornar depois a lista errorInputList (wrongInput), sendo que a função retorna
-//   um RuleOfThreeResult, pensei em colocar na classe uma val de List<InputErro>, mas então
-//   pensei "Isso realmente deveria pertencer a essa classe?" Então decidi deixar de fora e
-//   com isso validar em outro lugar talvez
-private fun onCalculateClick(
-    numA: String,
-    numB: String,
-    numC: String,
-    type: CalculationType
-): RuleOfThreeResult {
-    val rule = RuleOfThree(
-        valueA = numA.toDouble(),
-        valueB = numB.toDouble(),
-        valueC = numC.toDouble(),
-        type = type
-    )
-
-    var result = RuleOfThreeCalculator().calculate(rule)
-    var formulaNume = ""
-    var formulaDeno = ""
-    var expressionNume = ""
-    var expressionDeno = ""
-    var hasResult = true
-
-    if (type == CalculationType.DIRECT) {
-        if (rule.valueA == 0.0) hasResult = false
-    } else {
-        if (rule.valueC == 0.0) hasResult = false
-    }
-
-    if (hasResult) {
-        when(type) {
-            CalculationType.DIRECT -> {
-                formulaNume = "B * C"
-                formulaDeno = "A"
-                expressionNume = "${rule.valueB} * ${rule.valueC}"
-                expressionDeno = "${rule.valueA}"
-            }
-            CalculationType.INVERSE -> {
-                formulaNume = "A * B"
-                formulaDeno = "C"
-                expressionNume = "${rule.valueA} * ${rule.valueB}"
-                expressionDeno = "${rule.valueC}"
+            when(val result = calculationResult) {
+                is CalculationResult.Success -> {
+                    ResultCard(
+                        result = result.result
+                    )
+                }
+                else -> {}
             }
         }
     }
-
-    return RuleOfThreeResult(
-        result = result,
-        formulaNumerator = formulaNume,
-        formulaDenominator = formulaDeno,
-        expressionNumerator = expressionNume,
-        expressionDenominator = expressionDeno,
-        hasResult = hasResult
-    )
 }
-
 
 @Composable
 @Preview(showBackground = true)
