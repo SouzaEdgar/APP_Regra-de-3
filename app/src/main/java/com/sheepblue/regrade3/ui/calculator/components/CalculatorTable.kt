@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.sheepblue.regrade3.domain.enums.InputError
 
 @Composable
 fun CalculatorTable(
@@ -16,7 +17,8 @@ fun CalculatorTable(
     numC: String,
     onNumAChange: (String) -> Unit,
     onNumBChange: (String) -> Unit,
-    onNumCChange: (String) -> Unit
+    onNumCChange: (String) -> Unit,
+    wrongInput: List<InputError>
 ) {
     Column(
         modifier = Modifier
@@ -34,7 +36,8 @@ fun CalculatorTable(
                 quadrant = "A",
                 text = numA,
                 onTextChange = onNumAChange,
-                readOnly = false
+                readOnly = false,
+                isError = InputError.VALUE_A in wrongInput
             )
             // Segundo quadrante
             NumberInput(
@@ -42,7 +45,8 @@ fun CalculatorTable(
                 quadrant = "B",
                 text = numB,
                 onTextChange = onNumBChange,
-                readOnly = false
+                readOnly = false,
+                isError = InputError.VALUE_B in wrongInput
             )
         }
         Row(
@@ -55,7 +59,8 @@ fun CalculatorTable(
                 quadrant = "C",
                 text = numC,
                 onTextChange = onNumCChange,
-                readOnly = false
+                readOnly = false,
+                isError = InputError.VALUE_C in wrongInput
             )
             // Quarto quadrante ( X )
             NumberInput(
@@ -63,7 +68,8 @@ fun CalculatorTable(
                 quadrant = "X",
                 text = "???",
                 onTextChange = {},
-                readOnly = true
+                readOnly = true,
+                isError = false
             )
         }
     }

@@ -1,14 +1,15 @@
 package com.sheepblue.regrade3.ui.calculator
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -17,13 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sheepblue.regrade3.domain.RuleOfThreeCalculator
-import com.sheepblue.regrade3.domain.model.CalculationType
+import com.sheepblue.regrade3.domain.enums.CalculationType
+import com.sheepblue.regrade3.domain.enums.InputError
 import com.sheepblue.regrade3.domain.model.RuleOfThree
 import com.sheepblue.regrade3.ui.calculator.components.CalculateButton
 import com.sheepblue.regrade3.ui.calculator.components.CalculationTypeSelector
 import com.sheepblue.regrade3.ui.calculator.components.CalculatorTable
 import com.sheepblue.regrade3.ui.calculator.components.ResultCard
 import com.sheepblue.regrade3.utils.isValidNumber
+import com.sheepblue.regrade3.utils.validateInputs
 
 
 /**
@@ -49,12 +52,12 @@ fun CalculatorScreen() {
     var numB by rememberSaveable { mutableStateOf("") }
     var numC by rememberSaveable { mutableStateOf("") }
 
-    var selectedType by remember { mutableStateOf(CalculationType.INVERSE) }
+    var selectedType by remember { mutableStateOf(CalculationType.DIRECT) }
 
     var showCard by remember { mutableStateOf(false) }
-    var emptyNum by remember { mutableStateOf("") }
-    var hasResult by remember { mutableStateOf(false) }
     var result by remember { mutableDoubleStateOf(0.0) }
+
+    val wrongInput = remember { mutableStateListOf<InputError>() }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -65,25 +68,39 @@ fun CalculatorScreen() {
                 numA = numA,
                 numB = numB,
                 numC = numC,
-                onNumAChange = { if (isValidNumber(it)) numA = it },
-                onNumBChange = { if (isValidNumber(it)) numB = it },
-                onNumCChange = { if (isValidNumber(it)) numC = it }
+                onNumAChange = {
+                    showCard = false
+                    wrongInput.remove(InputError.VALUE_A)
+                    if (isValidNumber(it)) numA = it
+               },
+                onNumBChange = {
+                    showCard = false
+                    wrongInput.remove(InputError.VALUE_B)
+                    if (isValidNumber(it)) numB = it
+                },
+                onNumCChange = {
+                    showCard = false
+                    wrongInput.remove(InputError.VALUE_C)
+                    if (isValidNumber(it)) numC = it
+                },
+                wrongInput = wrongInput
             )
             Spacer(modifier = Modifier.height(3.dp))
             CalculationTypeSelector(
                 selectedType = selectedType,
                 options = CalculationType.entries,
-                onClick = { selectedType = it }
+                onClick = {
+                    showCard = false
+                    selectedType = it
+                }
             )
         }
-        // TODO: ao clicar no botão VALIDAR os inputs, e então se possivel exibir o Card de Resultado
+        // TODO: refatorar validacao dos inputs antes do calculo
         CalculateButton {
-            hasResult = false
-            if (numA.isEmpty()) emptyNum = "Valor A"
-            else if (numB.isEmpty()) emptyNum = "Valor B"
-            else if (numC.isEmpty()) emptyNum = "Valor C"
+            wrongInput.clear()
+            val validate = validateInputs(numA, numB, numC)
 
-            if (emptyNum.isEmpty()) {
+            if (validate.isEmpty()) {
                 result = RuleOfThreeCalculator().calculate(
                     RuleOfThree(
                         valueA = numA.toDouble(),
@@ -92,25 +109,24 @@ fun CalculatorScreen() {
                         type = selectedType
                     )
                 )
-                hasResult = true
-            }
-
-            showCard = true
-        }
-
-        if (showCard) {
-            if (hasResult) {
-                ResultCard(
-                    type = selectedType,
-                    result = result,
-                    numA = numA,
-                    numB = numB,
-                    numC = numC
-                )
+                showCard = true
             } else {
-                Text("Preencher $emptyNum")
+                validate.forEach { value ->
+                    wrongInput.add(value)
+                }
             }
         }
+
+        AnimatedVisibility(visible = showCard) {
+            ResultCard(
+                type = selectedType,
+                result = result,
+                numA = numA,
+                numB = numB,
+                numC = numC
+            )
+        }
+
     }
 }
 

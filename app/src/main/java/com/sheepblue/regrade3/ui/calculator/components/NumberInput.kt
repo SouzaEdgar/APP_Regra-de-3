@@ -22,7 +22,8 @@ fun NumberInput(
     quadrant: String,
     text: String,
     onTextChange: (String) -> Unit,
-    readOnly: Boolean
+    readOnly: Boolean,
+    isError: Boolean
 ) {
     OutlinedTextField(
         value = text,
@@ -31,7 +32,8 @@ fun NumberInput(
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         label = { Text("Valor $quadrant") },
         placeholder = { Text("Digite o valor de $quadrant") },
-        modifier = modifier
+        modifier = modifier,
+        isError = isError
     )
 }
 
@@ -49,7 +51,8 @@ fun NumberInputPreview() {
                     num = text
                 }
             },
-            readOnly = true
+            readOnly = true,
+            isError = false
         )
     }
 }
