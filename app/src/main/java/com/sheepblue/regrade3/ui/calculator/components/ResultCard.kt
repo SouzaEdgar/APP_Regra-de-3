@@ -40,16 +40,16 @@ fun ResultCard(
 
     when(type) {
         CalculationType.INVERSE -> {
-            formulaNumerator = "B * C"
-            formulaDenominator = "A"
-            numerator = "$numB * $numC"
-            denominator = numA
-        }
-        CalculationType.DIRECT -> {
             formulaNumerator = "A * B"
             formulaDenominator = "C"
             numerator = "$numA * $numB"
             denominator = numC
+        }
+        CalculationType.DIRECT -> {
+            formulaNumerator = "B * C"
+            formulaDenominator = "A"
+            numerator = "$numB * $numC"
+            denominator = numA
         }
     }
 

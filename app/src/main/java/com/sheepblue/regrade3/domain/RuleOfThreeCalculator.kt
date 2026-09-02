@@ -12,10 +12,10 @@ class RuleOfThreeCalculator {
     }
 
     private fun calculateDirect(ruleOfThree: RuleOfThree): Double {
-        return (ruleOfThree.valueA * ruleOfThree.valueB) / ruleOfThree.valueC
+        return (ruleOfThree.valueB * ruleOfThree.valueC) / ruleOfThree.valueA
     }
 
     private fun calculateInverse(ruleOfThree: RuleOfThree): Double {
-        return (ruleOfThree.valueB * ruleOfThree.valueC) / ruleOfThree.valueA
+        return (ruleOfThree.valueA * ruleOfThree.valueB) / ruleOfThree.valueC
     }
 }
