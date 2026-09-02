@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sheepblue.regrade3.domain.enums.CalculationType
 import com.sheepblue.regrade3.domain.model.RuleOfThreeResult
 import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
 
@@ -32,7 +31,9 @@ fun ResultCard(
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -40,7 +41,7 @@ fun ResultCard(
             Fraction(Modifier.weight(1f), result.formulaNumerator, result.formulaDenominator)
             TextStyled(" => ")
             Fraction(Modifier.weight(1f), result.expressionNumerator, result.expressionDenominator)
-            TextStyled(" = $result")
+            TextStyled(" = ${result.result}")
         }
 
     }
