@@ -2,8 +2,11 @@ package com.sheepblue.regrade3.ui.calculator.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -27,18 +30,19 @@ fun CalculationTypeSelector(
     onClick: (CalculationType) -> Unit,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.End
     ) {
         Text(
             text = "Tipo de cálculo",
-            style = MaterialTheme.typography.titleMedium
+            style = MaterialTheme.typography.labelLarge
         )
-
+        Spacer(modifier = Modifier.width(8.dp))
         SingleChoiceSegmentedButtonRow {
             options.forEachIndexed { index, type ->
                 SegmentedButton(
+                    modifier = Modifier.height(36.dp),
                     shape = SegmentedButtonDefaults.itemShape(
                         index = index,
                         count = options.size
