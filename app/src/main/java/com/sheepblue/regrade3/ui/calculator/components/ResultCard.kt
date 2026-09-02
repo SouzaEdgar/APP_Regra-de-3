@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sheepblue.regrade3.domain.model.CalculationType
+import com.sheepblue.regrade3.domain.enums.CalculationType
 import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
 
 // TODO: posteriormente transformar essas informações em um data Class

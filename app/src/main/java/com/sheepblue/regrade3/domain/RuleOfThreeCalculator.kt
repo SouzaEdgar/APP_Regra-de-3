@@ -1,6 +1,6 @@
 package com.sheepblue.regrade3.domain
 
-import com.sheepblue.regrade3.domain.model.CalculationType
+import com.sheepblue.regrade3.domain.enums.CalculationType
 import com.sheepblue.regrade3.domain.model.RuleOfThree
 
 class RuleOfThreeCalculator {
