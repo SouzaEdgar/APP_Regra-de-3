@@ -5,6 +5,5 @@ data class RuleOfThreeResult(
     val formulaNumerator: String,
     val formulaDenominator: String,
     val expressionNumerator: String,
-    val expressionDenominator: String,
-    val hasResult: Boolean
+    val expressionDenominator: String
 )
