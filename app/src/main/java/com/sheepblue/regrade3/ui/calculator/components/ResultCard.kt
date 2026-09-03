@@ -38,9 +38,13 @@ fun ResultCard(
             horizontalArrangement = Arrangement.Center
         ) {
             TextStyled(text = "X = ")
+
             Fraction(Modifier.weight(1f), result.formulaNumerator, result.formulaDenominator)
+
             TextStyled(" => ")
+
             Fraction(Modifier.weight(1f), result.expressionNumerator, result.expressionDenominator)
+
             TextStyled(" = ${result.result}")
         }
 
@@ -67,10 +71,13 @@ private fun Fraction(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(numerator)
+
         HorizontalDivider()
+
         Text(denominator)
     }
 }
+
 
 @Composable
 @Preview(name = "light", showBackground = true)

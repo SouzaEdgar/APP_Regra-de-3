@@ -38,7 +38,9 @@ fun CalculationTypeSelector(
             text = "Tipo de cálculo",
             style = MaterialTheme.typography.labelLarge
         )
+
         Spacer(modifier = Modifier.width(8.dp))
+
         SingleChoiceSegmentedButtonRow {
             options.forEachIndexed { index, type ->
                 SegmentedButton(
@@ -55,6 +57,7 @@ fun CalculationTypeSelector(
         }
     }
 }
+
 
 @Composable
 @Preview(showBackground = true)

@@ -39,6 +39,7 @@ fun CalculatorTable(
                 readOnly = false,
                 isError = InputError.VALUE_A in wrongInput
             )
+
             // Segundo quadrante
             NumberInput(
                 modifier = Modifier.weight(1f),
@@ -62,6 +63,7 @@ fun CalculatorTable(
                 readOnly = false,
                 isError = InputError.VALUE_C in wrongInput
             )
+
             // Quarto quadrante ( X )
             NumberInput(
                 modifier = Modifier.weight(1f),
