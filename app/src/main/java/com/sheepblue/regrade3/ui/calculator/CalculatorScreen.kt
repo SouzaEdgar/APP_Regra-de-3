@@ -1,6 +1,5 @@
 package com.sheepblue.regrade3.ui.calculator
 
-import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,6 @@ import com.sheepblue.regrade3.ui.calculator.components.CalculatorTable
 import com.sheepblue.regrade3.ui.calculator.components.ResultCard
 import com.sheepblue.regrade3.ui.calculator.viewmodel.CalculatorViewModel
 import com.sheepblue.regrade3.utils.isValidNumber
-import kotlin.getValue
 
 @Composable
 fun CalculatorScreen(
@@ -67,16 +65,15 @@ fun CalculatorScreen(
             viewModel.onCalculateClick()
         }
 
-        when(val result = uiState.calculationResult) {
-            is CalculationResult.Success -> {
-                AnimatedVisibility(visible = true) {
-                    ResultCard(
-                        result = result.result
-                    )
+        AnimatedVisibility(
+            visible = uiState.calculationResult is CalculationResult.Success
+        ) {
+            when(val result = uiState.calculationResult) {
+                is CalculationResult.Success -> {
+                    ResultCard(result = result.result)
                 }
+                else -> {}
             }
-            is CalculationResult.Error -> {}
-            else -> {}
         }
     }
 }
