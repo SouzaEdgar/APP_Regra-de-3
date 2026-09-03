@@ -1,5 +1,6 @@
 package com.sheepblue.regrade3.ui.calculator
 
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sheepblue.regrade3.domain.enums.CalculationType
 import com.sheepblue.regrade3.domain.model.CalculationResult
 import com.sheepblue.regrade3.ui.calculator.components.CalculateButton
@@ -20,10 +23,11 @@ import com.sheepblue.regrade3.ui.calculator.components.CalculatorTable
 import com.sheepblue.regrade3.ui.calculator.components.ResultCard
 import com.sheepblue.regrade3.ui.calculator.viewmodel.CalculatorViewModel
 import com.sheepblue.regrade3.utils.isValidNumber
+import kotlin.getValue
 
 @Composable
 fun CalculatorScreen(
-    viewModel: CalculatorViewModel
+    viewModel: CalculatorViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -82,6 +86,6 @@ fun CalculatorScreen(
 @Preview(showBackground = true)
 fun CalculatorScreenPreview() {
     CalculatorScreen(
-        viewModel = CalculatorViewModel()
+        viewModel = viewModel()
     )
 }

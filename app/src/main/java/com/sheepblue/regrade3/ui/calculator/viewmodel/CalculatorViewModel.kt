@@ -8,10 +8,12 @@ import com.sheepblue.regrade3.domain.model.CalculationResult
 import com.sheepblue.regrade3.domain.model.RuleOfThree
 import com.sheepblue.regrade3.ui.calculator.state.CalculatorUiState
 import com.sheepblue.regrade3.utils.validateInputs
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+@HiltViewModel
 class CalculatorViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(CalculatorUiState())
 
