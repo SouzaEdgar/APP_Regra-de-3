@@ -96,7 +96,7 @@ fun CalculatorScreen(
                 options = CalculationType.entries,
                 onClick = {
                     showCard = false
-                    viewModel.onTypeSelected()
+                    viewModel.onTypeSelected(it)
                 }
             )
         }

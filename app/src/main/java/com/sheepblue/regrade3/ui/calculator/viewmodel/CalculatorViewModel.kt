@@ -45,10 +45,10 @@ class CalculatorViewModel: ViewModel() {
     }
 
     // CalculationTypeSelector
-    fun onTypeSelected() {
+    fun onTypeSelected(type: CalculationType) {
         _uiState.update {
             it.copy(
-                selectedType = it.selectedType,
+                selectedType = type,
                 calculationResult = null,
                 wrongInput = emptyList()
             )
