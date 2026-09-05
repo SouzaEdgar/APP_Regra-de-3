@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sheepblue.regrade3.domain.model.RuleOfThreeResult
@@ -26,58 +28,146 @@ import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
 fun ResultCard(
     result: RuleOfThreeResult
 ) {
+    val formulaParts = result.formulaNumerator.toBinaryParts()
+    val expressionParts = result.expressionNumerator.toBinaryParts()
+
     Card(
-        modifier = Modifier.padding(16.dp),
-        elevation = CardDefaults.cardElevation(4.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+        )
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+        Column(
+            modifier = Modifier.padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            TextStyled(text = "X = ")
+            HeaderResult(result.result)
 
-            Fraction(Modifier.weight(1f), result.formulaNumerator, result.formulaDenominator)
+            ResultSection(
+                title = "Fórmula",
+                left = formulaParts.first,
+                right = formulaParts.second,
+                denominator = result.formulaDenominator
+            )
 
-            TextStyled(" => ")
-
-            Fraction(Modifier.weight(1f), result.expressionNumerator, result.expressionDenominator)
-
-            TextStyled(" = ${result.result}")
+            ResultSection(
+                title = "Substituição",
+                left = expressionParts.first,
+                right = expressionParts.second,
+                denominator = result.expressionDenominator
+            )
         }
-
     }
 }
 
 @Composable
-private fun TextStyled(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Bold
-    )
+private fun HeaderResult(result: Double) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "X = ",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
+
+        Text(
+            text = result.toBigDecimal().toString(),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.ExtraBold,
+            maxLines = 1,
+            softWrap = false,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+private fun ResultSection(
+    title: String,
+    left: String,
+    right: String,
+    denominator: String
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.SemiBold
+        )
+
+        Fraction(
+            modifier = Modifier.fillMaxWidth(),
+            left = left,
+            right = right,
+            denominator = denominator
+        )
+    }
 }
 
 @Composable
 private fun Fraction(
     modifier: Modifier,
-    numerator: String,
+    left: String,
+    right: String,
     denominator: String
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(numerator)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = left,
+                maxLines = 1,
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis
+            )
 
-        HorizontalDivider()
+            Text(
+                text = " × ",
+                modifier = Modifier.padding(horizontal = 4.dp),
+                fontWeight = FontWeight.Bold
+            )
 
-        Text(denominator)
+            Text(
+                text = right,
+                maxLines = 1,
+                softWrap = false,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = 6.dp)
+        )
+
+        Text(
+            text = denominator,
+            maxLines = 1,
+            softWrap = false,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
+private fun String.toBinaryParts(): Pair<String, String> {
+    val parts = split(" * ", limit = 2)
+    return parts.getOrElse(0) { "" } to parts.getOrElse(1) { "" }
+}
 
 @Composable
 @Preview(name = "light", showBackground = true)
@@ -85,14 +175,14 @@ private fun Fraction(
 fun ResultCardPreview() {
     RegraDe3Theme {
         Surface(color = MaterialTheme.colorScheme.background) {
-            Box() {
+            Box(modifier = Modifier.fillMaxWidth()) {
                 ResultCard(
                     result = RuleOfThreeResult(
-                        result = 26.0,
+                        result = 1234567890.123,
                         formulaNumerator = "B * C",
                         formulaDenominator = "A",
-                        expressionNumerator = "65 * 2000",
-                        expressionDenominator = "5000"
+                        expressionNumerator = "1234567890 * 1234567890",
+                        expressionDenominator = "1234567890123"
                     )
                 )
             }
