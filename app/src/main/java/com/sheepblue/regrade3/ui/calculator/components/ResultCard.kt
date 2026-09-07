@@ -35,7 +35,7 @@ fun ResultCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
@@ -47,14 +47,14 @@ fun ResultCard(
         ) {
             HeaderResult(result.result)
 
-            ResultSection(
+            FractionBlock(
                 title = "Fórmula",
                 left = formulaParts.first,
                 right = formulaParts.second,
                 denominator = result.formulaDenominator
             )
 
-            ResultSection(
+            FractionBlock(
                 title = "Substituição",
                 left = expressionParts.first,
                 right = expressionParts.second,
@@ -89,28 +89,36 @@ private fun HeaderResult(result: Double) {
 }
 
 @Composable
-private fun ResultSection(
+private fun FractionBlock(
     title: String,
     left: String,
     right: String,
     denominator: String
 ) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 2.dp,
+        modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.SemiBold
-        )
+        Column(
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.SemiBold
+            )
 
-        Fraction(
-            modifier = Modifier.fillMaxWidth(),
-            left = left,
-            right = right,
-            denominator = denominator
-        )
+            Fraction(
+                modifier = Modifier.fillMaxWidth(),
+                left = left,
+                right = right,
+                denominator = denominator
+            )
+        }
     }
 }
 
@@ -126,7 +134,6 @@ private fun Fraction(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -134,12 +141,15 @@ private fun Fraction(
                 text = left,
                 maxLines = 1,
                 softWrap = false,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Medium
             )
 
             Text(
                 text = " × ",
-                modifier = Modifier.padding(horizontal = 4.dp),
+                modifier = Modifier.padding(horizontal = 6.dp),
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
 
@@ -147,7 +157,9 @@ private fun Fraction(
                 text = right,
                 maxLines = 1,
                 softWrap = false,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Medium
             )
         }
 
@@ -159,7 +171,9 @@ private fun Fraction(
             text = denominator,
             maxLines = 1,
             softWrap = false,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Medium
         )
     }
 }
