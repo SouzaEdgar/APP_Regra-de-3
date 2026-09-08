@@ -33,8 +33,7 @@ fun ResultCard(
 
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+            .fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(
@@ -42,8 +41,8 @@ fun ResultCard(
         )
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             HeaderResult(result.result)
 
@@ -102,8 +101,8 @@ private fun FractionBlock(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
                 text = title,
@@ -164,7 +163,7 @@ private fun Fraction(
         }
 
         HorizontalDivider(
-            modifier = Modifier.padding(vertical = 6.dp)
+            modifier = Modifier.padding(vertical = 4.dp)
         )
 
         Text(
@@ -182,6 +181,7 @@ private fun String.toBinaryParts(): Pair<String, String> {
     val parts = split(" * ", limit = 2)
     return parts.getOrElse(0) { "" } to parts.getOrElse(1) { "" }
 }
+
 
 @Composable
 @Preview(name = "light", showBackground = true)

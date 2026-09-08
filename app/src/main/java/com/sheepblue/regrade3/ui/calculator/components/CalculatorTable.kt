@@ -22,7 +22,7 @@ fun CalculatorTable(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         // Primeiro quadrante
