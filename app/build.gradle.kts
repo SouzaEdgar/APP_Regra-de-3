@@ -61,4 +61,6 @@ dependencies {
     ksp(libs.hilt.compiler)
     // Integração específica para usar 'hiltViewModel()' dentro do Jetpack Compose
     implementation(libs.hilt.navigation.compose)
+    // Icones
+    implementation("androidx.compose.material:material-icons-extended")
 }
