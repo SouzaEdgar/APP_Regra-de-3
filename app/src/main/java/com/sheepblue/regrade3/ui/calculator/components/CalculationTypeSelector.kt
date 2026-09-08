@@ -2,11 +2,10 @@ package com.sheepblue.regrade3.ui.calculator.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -19,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sheepblue.regrade3.domain.enums.CalculationType
@@ -30,28 +30,32 @@ fun CalculationTypeSelector(
     onClick: (CalculationType) -> Unit,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
-        Text(
-            text = "Tipo de cálculo",
-            style = MaterialTheme.typography.labelLarge
-        )
-
-        Spacer(modifier = Modifier.width(8.dp))
-
         SingleChoiceSegmentedButtonRow {
             options.forEachIndexed { index, type ->
                 SegmentedButton(
-                    modifier = Modifier.height(36.dp),
+                    modifier = Modifier
+                        .height(30.dp)
+                        .widthIn(min = 88.dp),
                     shape = SegmentedButtonDefaults.itemShape(
                         index = index,
                         count = options.size
                     ),
                     onClick = {  onClick(type) },
                     selected = selectedType == type,
-                    label = { Text(type.label) }
+                    label = {
+                        Text(
+                            text = type.label,
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            softWrap = false
+                        )
+                    }
                 )
             }
         }

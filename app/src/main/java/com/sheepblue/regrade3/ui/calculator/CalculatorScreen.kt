@@ -1,21 +1,30 @@
 package com.sheepblue.regrade3.ui.calculator
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sheepblue.regrade3.domain.enums.CalculationType
-import com.sheepblue.regrade3.domain.model.CalculationResult
+import com.sheepblue.regrade3.domain.model.RuleOfThreeResult
 import com.sheepblue.regrade3.ui.calculator.components.CalculateButton
 import com.sheepblue.regrade3.ui.calculator.components.CalculationTypeSelector
 import com.sheepblue.regrade3.ui.calculator.components.CalculatorTable
@@ -29,52 +38,111 @@ fun CalculatorScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+    Box(
+        modifier = Modifier.fillMaxSize()
     ) {
-        Column {
-            CalculatorTable(
-                numA = uiState.numA,
-                numB = uiState.numB,
-                numC = uiState.numC,
-                onNumAChange = {
-                    if (isValidNumber(it)) viewModel.onNumAChange(it)
-               },
-                onNumBChange = {
-                    if (isValidNumber(it)) viewModel.onNumBChange(it)
-                },
-                onNumCChange = {
-                    if (isValidNumber(it)) viewModel.onNumCChange(it)
-                },
-                wrongInput = uiState.wrongInput
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            shape = RoundedCornerShape(24.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
             )
-
-            Spacer(modifier = Modifier.height(3.dp))
-
-            CalculationTypeSelector(
-                selectedType = uiState.selectedType,
-                options = CalculationType.entries,
-                onClick = {
-                    viewModel.onTypeSelected(it)
-                }
-            )
-        }
-
-        CalculateButton {
-            viewModel.onCalculateClick()
-        }
-
-        AnimatedVisibility(
-            visible = uiState.calculationResult is CalculationResult.Success
         ) {
-            when(val result = uiState.calculationResult) {
-                is CalculationResult.Success -> {
-                    ResultCard(result = result.result)
+            Column(
+                modifier = Modifier
+                    .padding(top = 24.dp)
+            ) {
+                Row(
+                    modifier = Modifier,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "ENTRADAS",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(horizontal = 20.dp)
+                    )
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.surface,
+                        tonalElevation = 2.dp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(end = 20.dp)
+                    ) {
+                        CalculationTypeSelector(
+                            selectedType = uiState.selectedType,
+                            options = CalculationType.entries,
+                            onClick = {
+                                viewModel.onTypeSelected(it)
+                            }
+                        )
+                    }
                 }
-                else -> {}
+
+                Surface(
+                    shape = RoundedCornerShape(16.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 2.dp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
+                ) {
+                    CalculatorTable(
+                        numA = uiState.numA,
+                        numB = uiState.numB,
+                        numC = uiState.numC,
+                        onNumAChange = {
+                            if (isValidNumber(it)) viewModel.onNumAChange(it)
+                        },
+                        onNumBChange = {
+                            if (isValidNumber(it)) viewModel.onNumBChange(it)
+                        },
+                        onNumCChange = {
+                            if (isValidNumber(it)) viewModel.onNumCChange(it)
+                        },
+                        wrongInput = uiState.wrongInput
+                    )
+                }
+
+        }
+
+        }
+
+        Box(
+            modifier = Modifier.align(Alignment.Center).padding(bottom = 12.dp)
+        ) {
+            CalculateButton {
+                viewModel.onCalculateClick()
             }
         }
+
+
+        AnimatedVisibility(
+            visible = true,
+            //visible = uiState.calculationResult is CalculationResult.Success,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 24.dp)
+        ) {
+            ResultCard(result = RuleOfThreeResult(
+                result = 26.0,
+                formulaNumerator = "B * C",
+                formulaDenominator = "A",
+                expressionNumerator = "65 * 5000",
+                expressionDenominator = "5000"
+            ))
+//            when(val result = uiState.calculationResult) {
+//                is CalculationResult.Success -> {
+//                    ResultCard(result = result.result)
+//                }
+//                else -> {}
+//            }
+        }
+
     }
 }
 

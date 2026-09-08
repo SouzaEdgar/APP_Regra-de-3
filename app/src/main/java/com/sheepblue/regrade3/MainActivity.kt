@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import com.sheepblue.regrade3.ui.calculator.CalculatorScreen
-import com.sheepblue.regrade3.ui.calculator.viewmodel.CalculatorViewModel
 import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,7 +12,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+
         setContent {
             RegraDe3Theme {
                 CalculatorScreen() // a integração Compose + Hilt ja resolve a questao da viewModel
