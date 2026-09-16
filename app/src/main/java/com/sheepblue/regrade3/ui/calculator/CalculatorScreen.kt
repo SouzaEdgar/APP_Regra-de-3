@@ -1,5 +1,6 @@
 package com.sheepblue.regrade3.ui.calculator
 
+import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,8 +42,8 @@ import com.sheepblue.regrade3.ui.calculator.components.CalculationTypeSelector
 import com.sheepblue.regrade3.ui.calculator.components.CalculatorTable
 import com.sheepblue.regrade3.ui.calculator.components.ResultCard
 import com.sheepblue.regrade3.ui.calculator.viewmodel.CalculatorViewModel
+import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
 import com.sheepblue.regrade3.utils.isValidNumber
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,16 +81,15 @@ fun CalculatorScreen(
                     .align(Alignment.TopCenter)
                     .fillMaxWidth()
                     .widthIn(max = 340.dp)
-                    .padding(top = 8.dp, start = 12.dp, end = 12.dp),
+                    .padding(top = 18.dp, start = 12.dp, end = 12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Card(
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp),
-                    shape = RoundedCornerShape(20.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
+                        containerColor = MaterialTheme.colorScheme.surface
                     )
                 ) {
                     Column(
@@ -152,28 +152,30 @@ fun CalculatorScreen(
                 CalculateButton {
                     viewModel.onCalculateClick()
                 }
-            }
-            AnimatedVisibility(
-//                visible = true,
-                visible = uiState.calculationResult is CalculationResult.Success,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(start = 12.dp, end = 12.dp, bottom = 16.dp)
-            ) {
-//                ResultCard(
-//                    result = RuleOfThreeResult(
-//                        result = 26.0,
-//                        formulaNumerator = "B * C",
-//                        formulaDenominator = "A",
-//                        expressionNumerator = "65 * 5000",
-//                        expressionDenominator = "5000"
-//                    )
-//                )
-                when(val result = uiState.calculationResult) {
-                    is CalculationResult.Success -> {
-                        ResultCard(result = result.result)
-                    }
-                    else -> {}
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                AnimatedVisibility(
+                    visible = true,
+//                visible = uiState.calculationResult is CalculationResult.Success,
+                    modifier = Modifier
+                        .padding(start = 12.dp, end = 12.dp, bottom = 16.dp)
+                ) {
+                    ResultCard(
+                        result = RuleOfThreeResult(
+                            result = 26.0,
+                            formulaNumerator = "B * C",
+                            formulaDenominator = "A",
+                            expressionNumerator = "65 * 5000",
+                            expressionDenominator = "5000"
+                        )
+                    )
+//                when(val result = uiState.calculationResult) {
+//                    is CalculationResult.Success -> {
+//                        ResultCard(result = result.result)
+//                    }
+//                    else -> {}
+//                }
                 }
             }
         }
@@ -182,9 +184,17 @@ fun CalculatorScreen(
 
 
 @Composable
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(name = "light", showBackground = true)
+@Preview(name = "dark", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun CalculatorScreenPreview() {
-    CalculatorScreen(
-        viewModel = viewModel()
-    )
+    RegraDe3Theme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            CalculatorScreen(
+                viewModel = viewModel()
+            )
+        }
+    }
 }
