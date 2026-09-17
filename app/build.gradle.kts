@@ -63,4 +63,8 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     // Icones
     implementation("androidx.compose.material:material-icons-extended")
+
+    // DataStore (e Flow com lifecycle-aware)
+    implementation("androidx.datastore:datastore-preferences:1.2.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.10.0")
 }
