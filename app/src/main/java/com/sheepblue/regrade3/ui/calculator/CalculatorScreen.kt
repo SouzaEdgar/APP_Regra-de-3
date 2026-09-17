@@ -33,24 +33,28 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sheepblue.regrade3.domain.enums.CalculationType
 import com.sheepblue.regrade3.domain.model.CalculationResult
-import com.sheepblue.regrade3.domain.model.RuleOfThreeResult
 import com.sheepblue.regrade3.ui.calculator.components.CalculateButton
 import com.sheepblue.regrade3.ui.calculator.components.CalculationTypeSelector
 import com.sheepblue.regrade3.ui.calculator.components.CalculatorTable
 import com.sheepblue.regrade3.ui.calculator.components.ResultCard
 import com.sheepblue.regrade3.ui.calculator.viewmodel.CalculatorViewModel
 import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
+import com.sheepblue.regrade3.ui.theme.ThemeViewModel
 import com.sheepblue.regrade3.utils.isValidNumber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalculatorScreen(
-    viewModel: CalculatorViewModel = hiltViewModel()
+    viewModel: CalculatorViewModel = hiltViewModel(),
+    themeViewModel: ThemeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    val isDarkMode by themeViewModel.isDarkMode.collectAsStateWithLifecycle(initialValue = false)
 
     // TODO: Corrige campo da tela, adiciona Scaffold
     //  melhora layout e espaçamento dos componentes, altera os tema
@@ -61,7 +65,7 @@ fun CalculatorScreen(
             CenterAlignedTopAppBar(
                 title = { Text(text = "Regra de 3") },
                 actions = {
-                    IconButton(onClick = { /* tema */ }) {
+                    IconButton(onClick = { themeViewModel.updateDarkMode(!isDarkMode) }) {
                         Icon(
                             Icons.Default.DarkMode,
                             contentDescription = "botão de tema"
@@ -156,26 +160,26 @@ fun CalculatorScreen(
                 Spacer(modifier = Modifier.height(32.dp))
 
                 AnimatedVisibility(
-                    visible = true,
-//                visible = uiState.calculationResult is CalculationResult.Success,
+                    //visible = true,
+                    visible = uiState.calculationResult is CalculationResult.Success,
                     modifier = Modifier
                         .padding(start = 12.dp, end = 12.dp, bottom = 16.dp)
                 ) {
-                    ResultCard(
-                        result = RuleOfThreeResult(
-                            result = 26.0,
-                            formulaNumerator = "B * C",
-                            formulaDenominator = "A",
-                            expressionNumerator = "65 * 5000",
-                            expressionDenominator = "5000"
-                        )
-                    )
-//                when(val result = uiState.calculationResult) {
-//                    is CalculationResult.Success -> {
-//                        ResultCard(result = result.result)
-//                    }
-//                    else -> {}
-//                }
+                    when(val result = uiState.calculationResult) {
+                        is CalculationResult.Success -> {
+                            ResultCard(result = result.result)
+                        }
+                        else -> {}
+                    }
+//                    ResultCard(
+//                        result = RuleOfThreeResult(
+//                            result = 26.0,
+//                            formulaNumerator = "B * C",
+//                            formulaDenominator = "A",
+//                            expressionNumerator = "65 * 5000",
+//                            expressionDenominator = "5000"
+//                        )
+//                    )
                 }
             }
         }
@@ -193,7 +197,8 @@ fun CalculatorScreenPreview() {
             color = MaterialTheme.colorScheme.background
         ) {
             CalculatorScreen(
-                viewModel = viewModel()
+                viewModel = viewModel(),
+                themeViewModel = viewModel()
             )
         }
     }
