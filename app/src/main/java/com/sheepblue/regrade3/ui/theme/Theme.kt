@@ -1,5 +1,7 @@
 package com.sheepblue.regrade3.ui.theme
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -43,13 +45,21 @@ fun RegraDe3Theme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
+    val targetColorScheme = when {
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
 
+    val animatedColorScheme = targetColorScheme.copy(
+        background = animateColorAsState(targetColorScheme.background, animationSpec = tween(500)).value,
+        surface = animateColorAsState(targetColorScheme.surface, animationSpec = tween(500)).value,
+        primary = animateColorAsState(targetColorScheme.primary, animationSpec = tween(500)).value,
+        onBackground = animateColorAsState(targetColorScheme.onBackground, animationSpec = tween(500)).value,
+        onSurface = animateColorAsState(targetColorScheme.onSurface, animationSpec = tween(500)).value
+    )
+
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = animatedColorScheme,
         typography = Typography,
         content = content
     )
