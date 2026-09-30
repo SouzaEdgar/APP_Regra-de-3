@@ -4,9 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.core.view.WindowCompat.getInsetsController
-import androidx.core.view.WindowInsetsCompat
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,16 +21,28 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val controller = getInsetsController(window, window.decorView)
-        controller.hide(WindowInsetsCompat.Type.statusBars())
-        controller.systemBarsBehavior =
-            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-
         setContent {
             val themeViewModel: ThemeViewModel = hiltViewModel()
+
             val isDarkMode by themeViewModel.isDarkMode.collectAsStateWithLifecycle(
                 initialValue = isSystemInDarkTheme()
             )
+
+            val view = LocalView.current
+
+            SideEffect {
+                val controller = WindowCompat.getInsetsController(window, view)
+
+                controller.systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+
+                // false = ícone light | true = ícone dark
+                controller.isAppearanceLightStatusBars = !isDarkMode
+
+                // o mesmo com a barra de navegação
+                controller.isAppearanceLightNavigationBars = !isDarkMode
+            }
+
             RegraDe3Theme(darkTheme = isDarkMode) {
                 CalculatorScreen() // a integração Compose + Hilt ja resolve a questao da viewModel
             }
