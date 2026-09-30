@@ -7,7 +7,7 @@ fun isValidNumber(text: String): Boolean {
 
     for (char in text) {
         when {
-            char == '.' -> pointCount ++
+            char == '.' || char == ',' -> pointCount ++
             !char.isDigit() -> return false
         }
     }

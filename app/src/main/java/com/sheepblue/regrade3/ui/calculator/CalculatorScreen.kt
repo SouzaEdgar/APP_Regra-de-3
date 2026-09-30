@@ -157,13 +157,13 @@ fun CalculatorContent(
                             numB = uiState.numB,
                             numC = uiState.numC,
                             onNumAChange = {
-                                if (isValidNumber(it)) onNumAChange(it)
+                                if (isValidNumber(it)) onNumAChange(it.replace(",","."))
                             },
                             onNumBChange = {
-                                if (isValidNumber(it)) onNumBChange(it)
+                                if (isValidNumber(it)) onNumBChange(it.replace(",","."))
                             },
                             onNumCChange = {
-                                if (isValidNumber(it)) onNumCChange(it)
+                                if (isValidNumber(it)) onNumCChange(it.replace(",","."))
                             },
                             wrongInput = uiState.wrongInput
                         )
