@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +40,8 @@ fun CalculateButton(
         targetValue = if (clicked) 4.dp else 24.dp
     )
 
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
@@ -46,6 +49,7 @@ fun CalculateButton(
         OutlinedButton(
             onClick = {
                 clicked = true
+                keyboardController?.hide()
                 onClick()
             },
             shape = RoundedCornerShape(size = shapeRadius),
