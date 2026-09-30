@@ -1,6 +1,7 @@
 package com.sheepblue.regrade3.ui.theme
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -51,11 +52,26 @@ fun RegraDe3Theme(
     }
 
     val animatedColorScheme = targetColorScheme.copy(
-        background = animateColorAsState(targetColorScheme.background, animationSpec = tween(500)).value,
-        surface = animateColorAsState(targetColorScheme.surface, animationSpec = tween(500)).value,
-        primary = animateColorAsState(targetColorScheme.primary, animationSpec = tween(500)).value,
-        onBackground = animateColorAsState(targetColorScheme.onBackground, animationSpec = tween(500)).value,
-        onSurface = animateColorAsState(targetColorScheme.onSurface, animationSpec = tween(500)).value
+        background = animateColorAsState(
+            targetValue = targetColorScheme.background,
+            animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+        ).value,
+        surface = animateColorAsState(
+            targetValue = targetColorScheme.surface,
+            animationSpec = tween(durationMillis = 450, easing = FastOutSlowInEasing)
+        ).value,
+        primary = animateColorAsState(
+            targetValue = targetColorScheme.primary,
+            animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing)
+        ).value,
+        onBackground = animateColorAsState(
+            targetValue = targetColorScheme.onBackground,
+            animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+        ).value,
+        onSurface = animateColorAsState(
+            targetValue = targetColorScheme.onSurface,
+            animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing)
+        ).value
     )
 
     MaterialTheme(

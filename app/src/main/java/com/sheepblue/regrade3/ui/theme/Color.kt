@@ -4,47 +4,47 @@ import androidx.compose.ui.graphics.Color
 
 // Light Theme
 val PrimaryLight = Color(0xFF3F6DF6)
-val OnPrimaryLight = Color(0xFFFFFFFF)
+val OnPrimaryLight = Color(0xFFFDFDFD)
 
-val SecondaryLight = Color(0xFF1F9D6C)
-val OnSecondaryLight = Color(0xFFFFFFFF)
+val SecondaryLight = Color(0xFF23996D)
+val OnSecondaryLight = Color(0xFFFDFDFD)
 
-val BackgroundLight = Color(0xFFF8FAFF)
-val OnBackgroundLight = Color(0xFF001D35)
+val BackgroundLight = Color(0xFFE9EDF2)
+val OnBackgroundLight = Color(0xFF132235)
 
-val SurfaceLight = Color(0xFFFFFFFF)
-val OnSurfaceLight = Color(0xFF001D35)
+val SurfaceLight = Color(0xFFF0F8FF)
+val OnSurfaceLight = Color(0xFF132235)
 
-val SurfaceVariantLight = Color(0xFFE1E7F0)
-val OnSurfaceVariantLight = Color(0xFF43474E)
+val SurfaceVariantLight = Color(0xFFE3E8EF)
+val OnSurfaceVariantLight = Color(0xFF55606D)
 
 val PrincipalTextLight = Color(0xFF111827)
 
-val ErrorLight = Color(0xFFCE3E3E)
-val OnErrorLight = Color(0xFFFFFFFF)
+val ErrorLight = Color(0xFFD04747)
+val OnErrorLight = Color(0xFFFDFDFD)
 
-val OutlineLight = Color(0xFFCAD4E2)
+val OutlineLight = Color(0xFFD3DAE4)
 
 
 // Dark Theme
-val PrimaryDark = Color(0xFF9BB0FF)
-val OnPrimaryDark = Color(0xFF0B1220)
+val PrimaryDark = Color(0xFF98AEFF)
+val OnPrimaryDark = Color(0xFF111926)
 
-val SecondaryDark = Color(0xFF74E0B1)
-val OnSecondaryDark = Color(0xFF0B1220)
+val SecondaryDark = Color(0xFF74DEB2)
+val OnSecondaryDark = Color(0xFF111926)
 
-val BackgroundDark = Color(0xFF0B0B0B)
-val OnBackgroundDark = Color(0xFFE2E2E6)
+val BackgroundDark = Color(0xFF161B22)
+val OnBackgroundDark = Color(0xFFE6EAF0)
 
-val SurfaceDark = Color(0xFF1C1C1C)
-val OnSurfaceDark = Color(0xFFE2E2E6)
+val SurfaceDark = Color(0xFF202731)
+val OnSurfaceDark = Color(0xFFE6EAF0)
 
-val SurfaceVariantDark = Color(0xFF242F3D)
-val OnSurfaceVariantDark = Color(0xFFC3C7CF)
+val SurfaceVariantDark = Color(0xFF2B3440)
+val OnSurfaceVariantDark = Color(0xFFC6CFDA)
 
 val PrincipalTextDark = Color(0xFFE5E7EB)
 
-val ErrorDark = Color(0xFFF87171)
-val OnErrorDark = Color(0xFF0B1220)
+val ErrorDark = Color(0xFFF27878)
+val OnErrorDark = Color(0xFF111926)
 
-val OutlineDark = Color(0xFF334155)
+val OutlineDark = Color(0xFF3A4655)
