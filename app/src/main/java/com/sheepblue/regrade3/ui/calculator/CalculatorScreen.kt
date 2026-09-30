@@ -195,9 +195,11 @@ fun CalculatorContent(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview(name = "light", showBackground = true)
-@Preview(name = "dark", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "light", showBackground = true, showSystemUi = true)
+@Preview(name = "dark", showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun CalculatorScreenPreview() {
     RegraDe3Theme {
         Surface(
@@ -219,15 +221,31 @@ fun CalculatorScreenPreview() {
                     )
                 )
             )
-            CalculatorContent(
-                innerPadding = PaddingValues(),
-                uiState = previewUiState,
-                onNumAChange = {},
-                onNumBChange = {},
-                onNumCChange = {},
-                onTypeSelected = {},
-                onCalculateClick = {}
-            )
+            Scaffold(
+                topBar = {
+                    CenterAlignedTopAppBar(
+                        title = { Text(text = "Regra de 3") },
+                        actions = {
+                            IconButton(onClick = { }) {
+                                Icon(
+                                    Icons.Default.DarkMode,
+                                    contentDescription = "botão de tema"
+                                )
+                            }
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                CalculatorContent(
+                    innerPadding = innerPadding,
+                    uiState = previewUiState,
+                    onNumAChange = {},
+                    onNumBChange = {},
+                    onNumCChange = {},
+                    onTypeSelected = {},
+                    onCalculateClick = {}
+                )
+            }
         }
     }
 }
