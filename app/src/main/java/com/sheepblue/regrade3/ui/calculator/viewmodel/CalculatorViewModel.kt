@@ -71,9 +71,9 @@ class CalculatorViewModel @Inject constructor(): ViewModel() {
                     wrongInput = emptyList(),
                     calculationResult = RuleOfThreeCalculator().calculate(
                         RuleOfThree(
-                            valueA = it.numA.toDouble(),
-                            valueB = it.numB.toDouble(),
-                            valueC = it.numC.toDouble(),
+                            valueA = it.numA.toBigDecimal(),
+                            valueB = it.numB.toBigDecimal(),
+                            valueC = it.numC.toBigDecimal(),
                             type = it.selectedType
                         )
                     )

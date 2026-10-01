@@ -1,6 +1,5 @@
 package com.sheepblue.regrade3.ui.calculator.components
 
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,6 +28,7 @@ fun NumberInput(
         value = text,
         onValueChange = onTextChange,
         readOnly = readOnly,
+        singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         label = { Text("Valor $quadrant") },
         placeholder = { Text("Digite o valor de $quadrant") },

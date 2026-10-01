@@ -27,3 +27,4 @@ fun validateInputs(
 
     return wrongInput
 }
+

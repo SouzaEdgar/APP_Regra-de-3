@@ -23,13 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sheepblue.regrade3.domain.model.RuleOfThreeResult
 import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
+import com.sheepblue.regrade3.utils.toDisplayString
+import java.math.BigDecimal
 
 @Composable
 fun ResultCard(
     result: RuleOfThreeResult
 ) {
     val formulaParts = result.formulaNumerator.toBinaryParts()
-    val expressionParts = result.expressionNumerator.toBinaryParts()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -54,16 +55,16 @@ fun ResultCard(
 
             FractionBlock(
                 title = "Substituição",
-                left = expressionParts.first,
-                right = expressionParts.second,
-                denominator = result.expressionDenominator
+                left = result.expressionNumerator[0].toDisplayString(),
+                right = result.expressionNumerator[1].toDisplayString(),
+                denominator = result.expressionDenominator.toDisplayString()
             )
         }
     }
 }
 
 @Composable
-private fun HeaderResult(result: Double) {
+private fun HeaderResult(result: BigDecimal) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -75,8 +76,9 @@ private fun HeaderResult(result: Double) {
             fontWeight = FontWeight.Bold
         )
 
+        // usar função para aplicar formatação no BigDecimal
         Text(
-            text = result.toBigDecimal().toString(),
+            text = result.toDisplayString(),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.ExtraBold,
             maxLines = 1,
@@ -191,11 +193,14 @@ fun ResultCardPreview() {
             Box(modifier = Modifier.fillMaxWidth()) {
                 ResultCard(
                     result = RuleOfThreeResult(
-                        result = 1234567890.123,
+                        result = BigDecimal("1234567890.00001111111111111111"),
                         formulaNumerator = "B * C",
                         formulaDenominator = "A",
-                        expressionNumerator = "1234567890 * 1234567890",
-                        expressionDenominator = "1234567890123"
+                        expressionNumerator = listOf(
+                            BigDecimal("12345678901234567890"),
+                            BigDecimal("12345678901234567890")
+                        ),
+                        expressionDenominator = BigDecimal("12345678901234567890")
                     )
                 )
             }

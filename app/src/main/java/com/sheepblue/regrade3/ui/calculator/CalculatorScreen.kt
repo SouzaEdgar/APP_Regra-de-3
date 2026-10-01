@@ -46,6 +46,7 @@ import com.sheepblue.regrade3.ui.calculator.viewmodel.CalculatorViewModel
 import com.sheepblue.regrade3.ui.theme.RegraDe3Theme
 import com.sheepblue.regrade3.ui.theme.ThemeViewModel
 import com.sheepblue.regrade3.utils.isValidNumber
+import java.math.BigDecimal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -213,11 +214,14 @@ fun CalculatorScreenPreview() {
                 selectedType = CalculationType.DIRECT,
                 calculationResult = CalculationResult.Success(
                     result = RuleOfThreeResult(
-                        result = 26.0,
+                        result = 26.5.toBigDecimal(),
                         formulaNumerator = "B * C",
                         formulaDenominator = "A",
-                        expressionNumerator = "65 * 5000",
-                        expressionDenominator = "5000"
+                        expressionNumerator = listOf(
+                            BigDecimal("65"),
+                            BigDecimal("5000")
+                        ),
+                        expressionDenominator = BigDecimal("5000")
                     )
                 )
             )

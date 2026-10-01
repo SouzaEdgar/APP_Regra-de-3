@@ -5,14 +5,19 @@ import com.sheepblue.regrade3.domain.enums.InputError
 import com.sheepblue.regrade3.domain.model.CalculationResult
 import com.sheepblue.regrade3.domain.model.RuleOfThree
 import com.sheepblue.regrade3.domain.model.RuleOfThreeResult
+import java.math.BigDecimal
+import java.math.MathContext
+import java.math.RoundingMode
 
 class RuleOfThreeCalculator {
-    fun calculate(rule: RuleOfThree): CalculationResult {
+    // configurar o resultado da divisão
+    private val mathContext = MathContext(20, RoundingMode.HALF_UP)
 
+    fun calculate(rule: RuleOfThree): CalculationResult {
         if (rule.type == CalculationType.DIRECT) {
-            if (rule.valueA == 0.0) return CalculationResult.Error(errors = listOf(InputError.VALUE_A))
+            if (rule.valueA == BigDecimal.ZERO) return CalculationResult.Error(errors = listOf(InputError.VALUE_A))
         } else {
-            if (rule.valueC == 0.0) return CalculationResult.Error(errors = listOf(InputError.VALUE_C))
+            if (rule.valueC == BigDecimal.ZERO) return CalculationResult.Error(errors = listOf(InputError.VALUE_C))
         }
 
         when (rule.type) {
@@ -21,8 +26,8 @@ class RuleOfThreeCalculator {
                     result = calculateDirect(rule),
                     formulaNumerator = "B * C",
                     formulaDenominator = "A",
-                    expressionNumerator = "${rule.valueB} * ${rule.valueC}",
-                    expressionDenominator = "${rule.valueA}"
+                    expressionNumerator = listOf(rule.valueB, rule.valueC),
+                    expressionDenominator = rule.valueA
                 )
             )
             CalculationType.INVERSE -> return CalculationResult.Success(
@@ -30,18 +35,22 @@ class RuleOfThreeCalculator {
                     result = calculateInverse(rule),
                     formulaNumerator = "A * B",
                     formulaDenominator = "C",
-                    expressionNumerator = "${rule.valueA} * ${rule.valueB}",
-                    expressionDenominator = "${rule.valueC}"
+                    expressionNumerator = listOf(rule.valueA, rule.valueB),
+                    expressionDenominator = rule.valueC
                 )
             )
         }
     }
 
-    private fun calculateDirect(ruleOfThree: RuleOfThree): Double {
-        return (ruleOfThree.valueB * ruleOfThree.valueC) / ruleOfThree.valueA
+    private fun calculateDirect(ruleOfThree: RuleOfThree): BigDecimal {
+        return ruleOfThree.valueB
+            .multiply(ruleOfThree.valueC)
+            .divide(ruleOfThree.valueA,mathContext)
     }
 
-    private fun calculateInverse(ruleOfThree: RuleOfThree): Double {
-        return (ruleOfThree.valueA * ruleOfThree.valueB) / ruleOfThree.valueC
+    private fun calculateInverse(ruleOfThree: RuleOfThree): BigDecimal {
+        return ruleOfThree.valueA
+            .multiply(ruleOfThree.valueB)
+            .divide(ruleOfThree.valueC,mathContext)
     }
 }
